@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Personaje Aleatorio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+      background-color: #f0f0f0;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      display: inline-block;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .info {
+      margin-top: 15px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Personaje Aleatorio</h1>
+    <div class="info" id="output">Cargando...</div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const personajes = [
+        { nombre: "Laura", edad: 16, rol: "Víctima de violencia sexual en la calle" },
+        { nombre: "Carlos", edad: 17, rol: "Testigo de violencia en la calle" },
+        { nombre: "Sofía", edad: 15, rol: "madre de la persona violentada" },
+        { nombre: "Jorge", edad: 18, rol: "Victimario" },
+        { nombre: "Ana", edad: 30, rol: "Víctima de violencia física " },
+        { nombre: "Gabriela", edad: 17, rol: "Víctima de abuso sexual infantil" },
+     { nombre: "Ernesto", edad: 17, rol: "Víctima de acoso sexual laboral" },
+     { nombre: "Araceli", edad: 17, rol: "Víctima de violencia sexual en el noviazgo" },
+     { nombre: "Blanca", edad: 17, rol: "Víctima de agresión sexual en espacios públicos" },
+     { nombre: "José", edad: 17, rol: "Víctima de control económico (pareja)" },
+     { nombre: "Luis", edad: 17, rol: "Víctima de violencia por orientación sexual" },
+     { nombre: "Enrique", edad: 17, rol: "Víctima de violencia en redes sociales" },
+     { nombre: "Yuriko", edad: 17, rol: "Víctima que no denuncia por miedo o dependencia" },
+     { nombre: "Ernestina", edad: 17, rol: "Victimario (pareja agresora)" },
+     { nombre: "MAriana", edad: 17, rol: "Victimario (padre o madre violento/a)" },
+     { nombre: "Elizabeth", edad: 17, rol: "Victimario (compañero de trabajo acosador)l" },
+     { nombre: "Gustavo", edad: 17, rol: "Victimario (agresor sexual reincidente)l" },
+     { nombre: "Clementina", edad: 17, rol: "Victimario (joven que repite patrones machistas)" },
+     { nombre: "Soledad", edad: 17, rol: "Hermana que observa y guarda silencio" },
+     { nombre: "Gloria", edad: 17, rol: "Hijo/a que presencia violencia en casa" },
+     { nombre: "Guadalupe", edad: 17, rol: "Vecino/a que escucha gritos" },
+     { nombre: "Gerardo", edad: 17, rol: "Amigo/a que sospecha pero no interviene" },
+     { nombre: "Joél", edad: 17, rol: "mpañero/a de trabajo que ve el acoso" },
+     { nombre: "Juan David", edad: 17, rol: "Compañero/a que denuncia el acoso" },
+     { nombre: "Agustín", edad: 17, rol: "Docente que nota señales de violencia" },
+     { nombre: "Heriberto", edad: 17, rol: "Tutor/a escolar preocupado/a" },
+     { nombre: "Gabriel", edad: 17, rol: "Empleado/a que minimiza los hechos" },
+     { nombre: "Emanuel", edad: 17, rol: "Hermano que justifica al agresor" },
+
+      ];
+
+      const output = document.getElementById("output");
+
+      function getUsados() {
+        try {
+          const usados = localStorage.getItem("personajesUsados");
+          return usados ? JSON.parse(usados) : [];
+        } catch (e) {
+          console.error("Error accediendo a localStorage", e);
+          return [];
+        }
+      }
+
+      function guardarUsado(index) {
+        const usados = getUsados();
+        usados.push(index);
+        localStorage.setItem("personajesUsados", JSON.stringify(usados));
+      }
+
+      function mostrarPersonaje() {
+        const usados = getUsados();
+        const disponibles = personajes
+          .map((_, i) => i)
+          .filter(i => !usados.includes(i));
+
+        if (disponibles.length === 0) {
+          output.innerHTML = `<strong>Ya no hay más personajes disponibles.</strong><br>
+          <em>(Presiona F12 y borra el localStorage si quieres reiniciar)</em>`;
+          return;
+        }
+
+        const indice = disponibles[Math.floor(Math.random() * disponibles.length)];
+        const personaje = personajes[indice];
+        guardarUsado(indice);
+
+        output.innerHTML = `
+          <strong>Nombre:</strong> ${personaje.nombre}<br>
+          <strong>Edad:</strong> ${personaje.edad}<br>
+          <strong>Rol:</strong> ${personaje.rol}
+        `;
+      }
+
+      mostrarPersonaje();
+    });
+  </script>
+</body>
+</html>
